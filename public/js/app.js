@@ -115,7 +115,7 @@ async function loadPackages() {
         let paymentBadge = '';
         
         if (pkg.allow_stars) {
-          priceDisplay = `${pkg.stars_price || 0}⭐`;
+          priceDisplay = `${pkg.stars_price || 0}⭐ · $${parseFloat(pkg.price).toFixed(2)}`;
           paymentBadge = '<span class="payment-badge stars">Stars</span>';
         } else if (pkg.require_premium) {
           priceDisplay = userData?.is_premium ? 'Free' : 'Requires Premium';
