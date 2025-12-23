@@ -5,15 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Star Buy Premium Shop</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <div id="app">
     <nav class="bottom-nav">
-      <button class="nav-btn active" data-page="home">Home</button>
-      <button class="nav-btn" data-page="wallet">Wallet</button>
-      <button class="nav-btn" data-page="account">Account</button>
-      <button class="nav-btn" data-page="community">More</button>
+      <button class="nav-btn active" data-page="home"><i class="fas fa-home"></i><span>Home</span></button>
+      <button class="nav-btn" data-page="wallet"><i class="fas fa-wallet"></i><span>Wallet</span></button>
+      <button class="nav-btn" data-page="account"><i class="fas fa-user"></i><span>Account</span></button>
+      <button class="nav-btn" data-page="community"><i class="fas fa-bars"></i><span>More</span></button>
     </nav>
 
     <div id="home" class="page active">
@@ -22,12 +23,12 @@
       </div>
       
       <div id="stars-section" class="packages-section">
-        <h2 class="section-title">⭐ Stars</h2>
+        <h2 class="section-title"><i class="fas fa-star"></i> Stars</h2>
         <div id="stars-packages" class="packages-container"></div>
       </div>
 
       <div id="premium-section" class="packages-section">
-        <h2 class="section-title">👑 Premium</h2>
+        <h2 class="section-title"><i class="fas fa-crown"></i> Premium</h2>
         <div id="premium-packages" class="packages-container"></div>
       </div>
 
@@ -50,7 +51,7 @@
           <span class="amount" id="hold-balance">$0.00</span>
         </div>
       </div>
-      <button class="btn btn-primary" onclick="showDepositForm()">+ Add Money</button>
+      <button class="btn btn-primary" onclick="showDepositForm()"><i class="fas fa-plus"></i> Add Money</button>
       
       <div id="deposit-form" class="form-container hidden">
         <h3>Add Money</h3>
@@ -83,8 +84,8 @@
           <label id="tx-hash-label">Transaction Hash</label>
           <input type="text" id="tx-hash" placeholder="Enter transaction hash">
         </div>
-        <button class="btn btn-primary" id="submit-deposit-btn" onclick="submitDeposit()">Submit Deposit</button>
-        <button class="btn btn-secondary" onclick="hideDepositForm()">Cancel</button>
+        <button class="btn btn-primary" id="submit-deposit-btn" onclick="submitDeposit()"><i class="fas fa-check"></i> Submit Deposit</button>
+        <button class="btn btn-secondary" onclick="hideDepositForm()"><i class="fas fa-times"></i> Cancel</button>
       </div>
 
       <div class="history-section">
@@ -126,7 +127,7 @@
       </div>
 
       <div class="support-buttons">
-        <a id="customer-support-btn" class="btn btn-secondary" target="_blank">Customer Support</a>
+        <a id="customer-support-btn" class="btn btn-secondary" target="_blank"><i class="fas fa-headset"></i> Support</a>
       </div>
     </div>
 
@@ -134,30 +135,63 @@
       <div class="header">
         <h1>Community & Info</h1>
       </div>
+
+      <div class="features-section">
+        <h3><i class="fas fa-sparkles"></i> Features</h3>
+        <div class="feature-item">
+          <i class="fas fa-lock"></i>
+          <div>
+            <h4>Secure Payments</h4>
+            <p>Your transactions are protected and encrypted</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-bolt"></i>
+          <div>
+            <h4>Instant Processing</h4>
+            <p>Orders are processed quickly and efficiently</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-gift"></i>
+          <div>
+            <h4>Rewards Program</h4>
+            <p>Earn rewards by referring friends</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-headset"></i>
+          <div>
+            <h4>24/7 Support</h4>
+            <p>Our team is always here to help</p>
+          </div>
+        </div>
+      </div>
+
       <div class="community-links">
         <a id="telegram-channel-link" class="link-card" target="_blank">
-          <span class="icon">📢</span>
+          <i class="fab fa-telegram"></i>
           <span>Telegram Channel</span>
         </a>
         <a id="telegram-group-link" class="link-card" target="_blank">
-          <span class="icon">👥</span>
+          <i class="fab fa-telegram"></i>
           <span>Telegram Group</span>
         </a>
         <a id="youtube-link" class="link-card" target="_blank">
-          <span class="icon">🎬</span>
+          <i class="fab fa-youtube"></i>
           <span>YouTube Channel</span>
         </a>
       </div>
 
       <div class="info-section">
-        <h3>How It Works</h3>
+        <h3><i class="fas fa-info-circle"></i> How It Works</h3>
         <ul>
-          <li>Add money to your wallet using USDT or BNB</li>
-          <li>Browse and select packages from the shop</li>
-          <li>Complete your purchase with your wallet balance</li>
-          <li>Share your referral link to earn rewards</li>
+          <li><i class="fas fa-check"></i> Add money to your wallet using USDT or BNB</li>
+          <li><i class="fas fa-check"></i> Browse and select packages from the shop</li>
+          <li><i class="fas fa-check"></i> Complete your purchase with your wallet balance</li>
+          <li><i class="fas fa-check"></i> Share your referral link to earn rewards</li>
         </ul>
-        <p class="note">Note: Balance cannot be withdrawn. Purchases are optional.</p>
+        <p class="note"><i class="fas fa-exclamation-circle"></i> Balance cannot be withdrawn. Purchases are optional.</p>
       </div>
     </div>
 
@@ -176,8 +210,8 @@
         <div id="premium-notice" class="premium-notice hidden">
           <p>⚠️ This package requires Telegram Premium</p>
         </div>
-        <button class="btn btn-primary" id="confirm-order-btn" onclick="confirmOrder()">Confirm Order</button>
-        <button class="btn btn-secondary" onclick="closeOrderModal()">Cancel</button>
+        <button class="btn btn-primary" id="confirm-order-btn" onclick="confirmOrder()"><i class="fas fa-check"></i> Confirm Order</button>
+        <button class="btn btn-secondary" onclick="closeOrderModal()"><i class="fas fa-times"></i> Cancel</button>
       </div>
     </div>
   </div>
