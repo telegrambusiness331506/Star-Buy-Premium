@@ -107,18 +107,26 @@ async function loadPackages() {
     
     container.innerHTML = packages.map(pkg => {
       let priceDisplay = '';
-      if (currentPaymentMethod === 'balance') {
-        priceDisplay = `$${parseFloat(pkg.price).toFixed(2)}`;
-      } else if (currentPaymentMethod === 'stars') {
+      let paymentBadge = '';
+      
+      if (pkg.allow_stars) {
         priceDisplay = `${pkg.stars_price || 0}⭐`;
-      } else if (currentPaymentMethod === 'premium') {
+        paymentBadge = '<span class="payment-badge stars">Stars</span>';
+      } else if (pkg.require_premium) {
         priceDisplay = userData?.is_premium ? 'Free' : 'Requires Premium';
+        paymentBadge = '<span class="payment-badge premium">Premium</span>';
+      } else {
+        priceDisplay = `$${parseFloat(pkg.price).toFixed(2)}`;
+        paymentBadge = '<span class="payment-badge balance">Balance</span>';
       }
       
       return `
         <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}', ${pkg.stars_price || 0}, ${pkg.require_premium ? 'true' : 'false'})">
           <div class="package-info">
-            <h3>${pkg.name}</h3>
+            <div class="package-header">
+              <h3>${pkg.name}</h3>
+              ${paymentBadge}
+            </div>
             <p>${pkg.description || pkg.type || ''}</p>
           </div>
           <div class="package-price">${priceDisplay}</div>
