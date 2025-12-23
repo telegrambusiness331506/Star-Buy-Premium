@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadUserData();
   await loadPackages();
   setupNavigation();
-  setupPaymentOptions();
 });
 
 async function loadSettings() {
@@ -129,18 +128,6 @@ async function loadPackages() {
   } catch (error) {
     console.error('Failed to load packages:', error);
   }
-}
-
-function setupPaymentOptions() {
-  const paymentBtns = document.querySelectorAll('.payment-option');
-  paymentBtns.forEach(btn => {
-    btn.addEventListener('click', async () => {
-      paymentBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentPaymentMethod = btn.dataset.payment;
-      await loadPackages();
-    });
-  });
 }
 
 async function loadReferralData() {
