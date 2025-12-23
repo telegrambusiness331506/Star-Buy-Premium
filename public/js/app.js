@@ -120,7 +120,7 @@ async function loadPackages() {
           rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
           paymentBadge = '<span class="payment-badge stars">Stars</span>';
         } else if (pkg.require_premium) {
-          leftPrice = userData?.is_premium ? 'Free' : 'Premium';
+          leftPrice = pkg.name.replace(' Premium', '');
           rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
           paymentBadge = '<span class="payment-badge premium">Premium</span>';
         } else {
