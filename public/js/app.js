@@ -98,41 +98,60 @@ async function loadPackages() {
     const response = await fetch('/api/packages');
     const packages = await response.json();
     
-    const container = document.getElementById('packages-list');
-    
     if (packages.length === 0) {
-      container.innerHTML = '<div class="empty-state"><p>No packages available yet</p></div>';
+      document.getElementById('stars-packages').innerHTML = '<div class="empty-state"><p>No packages available yet</p></div>';
+      document.getElementById('premium-packages').innerHTML = '';
+      document.getElementById('other-packages').innerHTML = '';
       return;
     }
-    
-    container.innerHTML = packages.map(pkg => {
-      let priceDisplay = '';
-      let paymentBadge = '';
-      
-      if (pkg.allow_stars) {
-        priceDisplay = `${pkg.stars_price || 0}⭐`;
-        paymentBadge = '<span class="payment-badge stars">Stars</span>';
-      } else if (pkg.require_premium) {
-        priceDisplay = userData?.is_premium ? 'Free' : 'Requires Premium';
-        paymentBadge = '<span class="payment-badge premium">Premium</span>';
-      } else {
-        priceDisplay = `$${parseFloat(pkg.price).toFixed(2)}`;
-        paymentBadge = '<span class="payment-badge balance">Balance</span>';
-      }
-      
-      return `
-        <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}', ${pkg.stars_price || 0}, ${pkg.require_premium ? 'true' : 'false'})">
-          <div class="package-info">
-            <div class="package-header">
-              <h3>${pkg.name}</h3>
-              ${paymentBadge}
+
+    const starsPackages = packages.filter(pkg => pkg.allow_stars);
+    const premiumPackages = packages.filter(pkg => pkg.require_premium && !pkg.allow_stars);
+    const otherPackages = packages.filter(pkg => !pkg.allow_stars && !pkg.require_premium);
+
+    const renderPackages = (pkgs) => {
+      return pkgs.map(pkg => {
+        let priceDisplay = '';
+        let paymentBadge = '';
+        
+        if (pkg.allow_stars) {
+          priceDisplay = `${pkg.stars_price || 0}⭐`;
+          paymentBadge = '<span class="payment-badge stars">Stars</span>';
+        } else if (pkg.require_premium) {
+          priceDisplay = userData?.is_premium ? 'Free' : 'Requires Premium';
+          paymentBadge = '<span class="payment-badge premium">Premium</span>';
+        } else {
+          priceDisplay = `$${parseFloat(pkg.price).toFixed(2)}`;
+          paymentBadge = '<span class="payment-badge balance">Balance</span>';
+        }
+        
+        return `
+          <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}', ${pkg.stars_price || 0}, ${pkg.require_premium ? 'true' : 'false'})">
+            <div class="package-info">
+              <div class="package-header">
+                <h3>${pkg.name}</h3>
+                ${paymentBadge}
+              </div>
+              <p>${pkg.description || pkg.type || ''}</p>
             </div>
-            <p>${pkg.description || pkg.type || ''}</p>
+            <div class="package-price">${priceDisplay}</div>
           </div>
-          <div class="package-price">${priceDisplay}</div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    };
+
+    const starsContainer = document.getElementById('stars-packages');
+    const premiumContainer = document.getElementById('premium-packages');
+    const otherContainer = document.getElementById('other-packages');
+
+    starsContainer.innerHTML = starsPackages.length > 0 ? renderPackages(starsPackages) : '';
+    premiumContainer.innerHTML = premiumPackages.length > 0 ? renderPackages(premiumPackages) : '';
+    otherContainer.innerHTML = otherPackages.length > 0 ? renderPackages(otherPackages) : '';
+
+    document.getElementById('stars-section').style.display = starsPackages.length > 0 ? 'block' : 'none';
+    document.getElementById('premium-section').style.display = premiumPackages.length > 0 ? 'block' : 'none';
+    document.getElementById('other-section').style.display = otherPackages.length > 0 ? 'block' : 'none';
+
   } catch (error) {
     console.error('Failed to load packages:', error);
   }

@@ -97,6 +97,18 @@ body {
   display: block;
 }
 
+.packages-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text);
+  padding: 0 4px;
+}
+
 .packages-container {
   display: flex;
   flex-direction: column;
