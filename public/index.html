@@ -12,7 +12,6 @@
     <nav class="bottom-nav">
       <button class="nav-btn active" data-page="home">Home</button>
       <button class="nav-btn" data-page="wallet">Wallet</button>
-      <button class="nav-btn" data-page="referral">Referral</button>
       <button class="nav-btn" data-page="account">Account</button>
       <button class="nav-btn" data-page="community">More</button>
     </nav>
@@ -36,10 +35,6 @@
         <div class="balance-card">
           <span class="label">Hold Balance</span>
           <span class="amount" id="hold-balance">$0.00</span>
-        </div>
-        <div class="balance-card">
-          <span class="label">Referral Balance</span>
-          <span class="amount" id="referral-balance-wallet">$0.00</span>
         </div>
       </div>
       <button class="btn btn-primary" onclick="showDepositForm()">+ Add Money</button>
@@ -85,24 +80,6 @@
       </div>
     </div>
 
-    <div id="referral" class="page">
-      <div class="header">
-        <h1>Referral Program</h1>
-      </div>
-      <div class="balance-card large">
-        <span class="label">Referral Balance</span>
-        <span class="amount" id="ref-balance">$0.00</span>
-      </div>
-      <div class="referral-info">
-        <p><strong>Your Referral Link:</strong></p>
-        <div class="referral-link-box">
-          <span id="referral-link"></span>
-          <button class="btn btn-small" onclick="copyReferralLink()">Copy</button>
-        </div>
-        <p><strong>Total Successful Referrals:</strong> <span id="total-referrals">0</span></p>
-      </div>
-    </div>
-
     <div id="account" class="page">
       <div class="header">
         <h1>My Account</h1>
@@ -127,10 +104,6 @@
         <div class="info-row">
           <span class="label">Hold Balance</span>
           <span class="value" id="acc-hold-balance">$0.00</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Referral Balance</span>
-          <span class="value" id="acc-ref-balance">$0.00</span>
         </div>
       </div>
 

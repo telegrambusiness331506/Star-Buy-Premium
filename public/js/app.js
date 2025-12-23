@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadUserData();
   await loadPackages();
   setupNavigation();
+  loadReferralData = () => {};
 });
 
 async function loadSettings() {
@@ -82,7 +83,6 @@ function updateBalanceDisplays() {
   
   document.getElementById('acc-main-balance').textContent = `$${mainBalance}`;
   document.getElementById('acc-hold-balance').textContent = `$${holdBalance}`;
-  document.getElementById('acc-ref-balance').textContent = `$${refBalance}`;
 }
 
 function updateAccountInfo() {
@@ -138,21 +138,6 @@ async function loadPackages() {
   }
 }
 
-async function loadReferralData() {
-  try {
-    const response = await fetch(`/api/referrals/${telegramUser.id}`);
-    const data = await response.json();
-    
-    document.getElementById('ref-balance').textContent = `$${parseFloat(data.referralBalance).toFixed(2)}`;
-    document.getElementById('total-referrals').textContent = data.successfulReferrals;
-    
-    const botUsername = 'StarBuyPremiumBot';
-    const referralLink = `https://t.me/${botUsername}?start=${data.referralCode}`;
-    document.getElementById('referral-link').textContent = referralLink;
-  } catch (error) {
-    console.error('Failed to load referral data:', error);
-  }
-}
 
 async function loadOrderHistory() {
   try {
@@ -444,12 +429,4 @@ async function submitDeposit() {
   }
 }
 
-function copyReferralLink() {
-  const link = document.getElementById('referral-link').textContent;
-  navigator.clipboard.writeText(link).then(() => {
-    alert('Referral link copied!');
-  }).catch(() => {
-    alert('Failed to copy link');
-  });
-}
 
