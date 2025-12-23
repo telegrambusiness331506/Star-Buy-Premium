@@ -131,13 +131,6 @@ async function loadPackages() {
         
         return `
           <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}', ${pkg.stars_price || 0}, ${pkg.require_premium ? 'true' : 'false'})">
-            <div class="package-info">
-              <div class="package-header">
-                <h3>${pkg.name}</h3>
-                ${paymentBadge}
-              </div>
-              <p>${pkg.description || pkg.type || ''}</p>
-            </div>
             <div class="package-prices">
               <div class="price-left">${leftPrice}</div>
               <div class="price-right">${rightPrice}</div>

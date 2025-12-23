@@ -131,63 +131,23 @@ body {
   box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
 }
 
-.package-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 4px;
-}
-
-.package-info h3 {
-  font-size: 16px;
-  margin: 0;
-}
-
-.payment-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-
-.payment-badge.balance {
-  background: rgba(0, 184, 148, 0.2);
-  color: var(--success);
-}
-
-.payment-badge.stars {
-  background: rgba(253, 203, 110, 0.2);
-  color: var(--warning);
-}
-
-.payment-badge.premium {
-  background: rgba(108, 92, 231, 0.2);
-  color: var(--primary);
-}
-
-.package-info p {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin: 0;
-}
-
 .package-prices {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  gap: 20px;
 }
 
 .price-left {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: var(--warning);
-  min-width: 80px;
+  min-width: 100px;
 }
 
 .price-right {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   color: var(--success);
 }
