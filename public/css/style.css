@@ -173,7 +173,20 @@ body {
   margin: 0;
 }
 
-.package-price {
+.package-prices {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.price-left {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--warning);
+  min-width: 80px;
+}
+
+.price-right {
   font-size: 18px;
   font-weight: bold;
   color: var(--success);

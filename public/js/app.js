@@ -111,17 +111,21 @@ async function loadPackages() {
 
     const renderPackages = (pkgs) => {
       return pkgs.map(pkg => {
-        let priceDisplay = '';
+        let leftPrice = '';
+        let rightPrice = '';
         let paymentBadge = '';
         
         if (pkg.allow_stars) {
-          priceDisplay = `${pkg.stars_price || 0}⭐ · $${parseFloat(pkg.price).toFixed(2)}`;
+          leftPrice = `${pkg.stars_price || 0}⭐`;
+          rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
           paymentBadge = '<span class="payment-badge stars">Stars</span>';
         } else if (pkg.require_premium) {
-          priceDisplay = userData?.is_premium ? 'Free' : 'Requires Premium';
+          leftPrice = userData?.is_premium ? 'Free' : 'Premium';
+          rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
           paymentBadge = '<span class="payment-badge premium">Premium</span>';
         } else {
-          priceDisplay = `$${parseFloat(pkg.price).toFixed(2)}`;
+          leftPrice = '';
+          rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
           paymentBadge = '<span class="payment-badge balance">Balance</span>';
         }
         
@@ -134,7 +138,10 @@ async function loadPackages() {
               </div>
               <p>${pkg.description || pkg.type || ''}</p>
             </div>
-            <div class="package-price">${priceDisplay}</div>
+            <div class="package-prices">
+              <div class="price-left">${leftPrice}</div>
+              <div class="price-right">${rightPrice}</div>
+            </div>
           </div>
         `;
       }).join('');
