@@ -16,6 +16,8 @@ async function initDatabase() {
         main_balance DECIMAL(10,2) DEFAULT 0,
         hold_balance DECIMAL(10,2) DEFAULT 0,
         referral_balance DECIMAL(10,2) DEFAULT 0,
+        telegram_stars_balance INTEGER DEFAULT 0,
+        is_premium BOOLEAN DEFAULT FALSE,
         referral_code VARCHAR(50) UNIQUE,
         referred_by BIGINT,
         first_order_completed BOOLEAN DEFAULT FALSE,
@@ -27,9 +29,12 @@ async function initDatabase() {
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         price DECIMAL(10,2) NOT NULL,
+        stars_price INTEGER DEFAULT 0,
         type VARCHAR(100),
         input_label VARCHAR(255),
         description TEXT,
+        allow_stars BOOLEAN DEFAULT FALSE,
+        require_premium BOOLEAN DEFAULT FALSE,
         active BOOLEAN DEFAULT TRUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -41,6 +46,8 @@ async function initDatabase() {
         package_id INTEGER REFERENCES packages(id),
         package_name VARCHAR(255),
         amount DECIMAL(10,2) NOT NULL,
+        stars_amount INTEGER DEFAULT 0,
+        payment_method VARCHAR(50) DEFAULT 'balance',
         user_input TEXT,
         screenshot_path VARCHAR(500),
         status VARCHAR(50) DEFAULT 'PENDING',
@@ -88,7 +95,9 @@ async function initDatabase() {
         ('usdt_address', ''),
         ('bnb_address', ''),
         ('binance_pay_name', ''),
-        ('binance_pay_id', '')
+        ('binance_pay_id', ''),
+        ('allow_stars_payment', 'true'),
+        ('allow_premium_purchase', 'true')
       ON CONFLICT (key) DO NOTHING;
     `);
     console.log('Database initialized successfully');

@@ -51,6 +51,47 @@ body {
   color: var(--text-muted);
 }
 
+.payment-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.payment-option {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.payment-option:hover {
+  border-color: var(--primary);
+  color: var(--text);
+}
+
+.payment-option.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.premium-notice {
+  background: rgba(253, 203, 110, 0.1);
+  border: 1px solid rgba(253, 203, 110, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 16px 0;
+  color: var(--warning);
+  font-size: 14px;
+}
+
 .bottom-nav {
   position: fixed;
   bottom: 0;

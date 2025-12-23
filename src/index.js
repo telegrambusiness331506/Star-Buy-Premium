@@ -67,7 +67,7 @@ app.get('/api/settings', async (req, res) => {
 
 app.post('/api/order', upload.single('screenshot'), async (req, res) => {
   try {
-    const { telegramId, packageId, packageName, amount, userInput } = req.body;
+    const { telegramId, packageId, packageName, amount, userInput, paymentMethod } = req.body;
     const screenshotPath = req.file ? `/uploads/${req.file.filename}` : null;
 
     const userResult = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
@@ -77,8 +77,9 @@ app.post('/api/order', upload.single('screenshot'), async (req, res) => {
 
     const user = userResult.rows[0];
     const orderAmount = parseFloat(amount);
+    const method = paymentMethod || 'balance';
 
-    if (parseFloat(user.main_balance) < orderAmount) {
+    if (method === 'balance' && parseFloat(user.main_balance) < orderAmount) {
       return res.status(400).json({ error: 'Insufficient balance' });
     }
 
@@ -90,9 +91,9 @@ app.post('/api/order', upload.single('screenshot'), async (req, res) => {
     );
 
     const orderResult = await pool.query(
-      `INSERT INTO orders (order_id, user_id, package_id, package_name, amount, user_input, screenshot_path, status)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'PENDING') RETURNING *`,
-      [orderId, telegramId, packageId, packageName, orderAmount, userInput, screenshotPath]
+      `INSERT INTO orders (order_id, user_id, package_id, package_name, amount, user_input, screenshot_path, status, payment_method)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'PENDING', $8) RETURNING *`,
+      [orderId, telegramId, packageId, packageName, orderAmount, userInput, screenshotPath, method]
     );
 
     const order = orderResult.rows[0];
@@ -102,6 +103,47 @@ app.post('/api/order', upload.single('screenshot'), async (req, res) => {
     res.json({ success: true, order });
   } catch (error) {
     console.error('Create order error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/order-stars', upload.single('screenshot'), async (req, res) => {
+  try {
+    const { telegramId, packageId, packageName, starsAmount, userInput } = req.body;
+    const screenshotPath = req.file ? `/uploads/${req.file.filename}` : null;
+
+    const userResult = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = userResult.rows[0];
+    const stars = parseInt(starsAmount);
+
+    if (user.telegram_stars_balance < stars) {
+      return res.status(400).json({ error: 'Insufficient Telegram Stars' });
+    }
+
+    const orderId = 'ORD' + Date.now().toString().slice(-8);
+
+    await pool.query(
+      'UPDATE users SET telegram_stars_balance = telegram_stars_balance - $1 WHERE telegram_id = $2',
+      [stars, telegramId]
+    );
+
+    const orderResult = await pool.query(
+      `INSERT INTO orders (order_id, user_id, package_id, package_name, stars_amount, user_input, screenshot_path, status, payment_method)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'PENDING', 'stars') RETURNING *`,
+      [orderId, telegramId, packageId, packageName, stars, userInput, screenshotPath]
+    );
+
+    const order = orderResult.rows[0];
+    
+    sendOrderNotification(order, user).catch(console.error);
+
+    res.json({ success: true, order });
+  } catch (error) {
+    console.error('Create stars order error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

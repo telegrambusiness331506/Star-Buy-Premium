@@ -3,6 +3,7 @@ let userData = null;
 let settings = {};
 let selectedPackage = null;
 let isProcessing = false;
+let currentPaymentMethod = 'balance';
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (window.Telegram && window.Telegram.WebApp) {
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadUserData();
   await loadPackages();
   setupNavigation();
+  setupPaymentOptions();
 });
 
 async function loadSettings() {
@@ -73,6 +75,7 @@ function updateBalanceDisplays() {
   const mainBalance = parseFloat(userData.main_balance).toFixed(2);
   const holdBalance = parseFloat(userData.hold_balance).toFixed(2);
   const refBalance = parseFloat(userData.referral_balance).toFixed(2);
+  const starsBalance = userData.telegram_stars_balance || 0;
   
   document.getElementById('main-balance').textContent = `$${mainBalance}`;
   document.getElementById('hold-balance').textContent = `$${holdBalance}`;
@@ -103,18 +106,41 @@ async function loadPackages() {
       return;
     }
     
-    container.innerHTML = packages.map(pkg => `
-      <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}')">
-        <div class="package-info">
-          <h3>${pkg.name}</h3>
-          <p>${pkg.description || pkg.type || ''}</p>
+    container.innerHTML = packages.map(pkg => {
+      let priceDisplay = '';
+      if (currentPaymentMethod === 'balance') {
+        priceDisplay = `$${parseFloat(pkg.price).toFixed(2)}`;
+      } else if (currentPaymentMethod === 'stars') {
+        priceDisplay = `${pkg.stars_price || 0}⭐`;
+      } else if (currentPaymentMethod === 'premium') {
+        priceDisplay = userData?.is_premium ? 'Free' : 'Requires Premium';
+      }
+      
+      return `
+        <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}', ${pkg.stars_price || 0}, ${pkg.require_premium ? 'true' : 'false'})">
+          <div class="package-info">
+            <h3>${pkg.name}</h3>
+            <p>${pkg.description || pkg.type || ''}</p>
+          </div>
+          <div class="package-price">${priceDisplay}</div>
         </div>
-        <div class="package-price">$${parseFloat(pkg.price).toFixed(2)}</div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   } catch (error) {
     console.error('Failed to load packages:', error);
   }
+}
+
+function setupPaymentOptions() {
+  const paymentBtns = document.querySelectorAll('.payment-option');
+  paymentBtns.forEach(btn => {
+    btn.addEventListener('click', async () => {
+      paymentBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentPaymentMethod = btn.dataset.payment;
+      await loadPackages();
+    });
+  });
 }
 
 async function loadReferralData() {
@@ -212,25 +238,45 @@ function setupNavigation() {
   });
 }
 
-function selectPackage(id, name, price, inputLabel) {
+function selectPackage(id, name, price, inputLabel, starsPrice, requirePremium) {
   if (!userData) {
     alert('Please wait for data to load');
     return;
   }
   
-  if (parseFloat(userData.main_balance) < price) {
+  const method = currentPaymentMethod;
+  
+  if (method === 'balance' && parseFloat(userData.main_balance) < price) {
     alert('Insufficient balance. Please add money to your wallet first.');
     return;
   }
   
-  selectedPackage = { id, name, price };
+  if (method === 'stars' && userData.telegram_stars_balance < starsPrice) {
+    alert('Insufficient Telegram Stars. Stars coming soon!');
+    return;
+  }
+  
+  if (method === 'premium' && !userData.is_premium) {
+    alert('This package requires Telegram Premium');
+    return;
+  }
+  
+  selectedPackage = { id, name, price, starsPrice, requirePremium, method };
   
   document.getElementById('modal-package-name').textContent = name;
-  document.getElementById('modal-package-price').textContent = price.toFixed(2);
+  const priceDisplay = method === 'balance' ? `$${price.toFixed(2)}` : method === 'stars' ? `${starsPrice}⭐` : 'Free';
+  document.getElementById('modal-price-display').innerHTML = `Price: <span id="modal-package-price">${priceDisplay}</span>`;
   document.getElementById('modal-input-label').textContent = inputLabel;
   document.getElementById('order-input').value = '';
   document.getElementById('order-screenshot').value = '';
   document.getElementById('confirm-order-btn').disabled = false;
+  
+  const premiumNotice = document.getElementById('premium-notice');
+  if (requirePremium && method === 'premium') {
+    premiumNotice.classList.remove('hidden');
+  } else {
+    premiumNotice.classList.add('hidden');
+  }
   
   document.getElementById('order-modal').classList.remove('hidden');
 }
@@ -266,11 +312,19 @@ async function confirmOrder() {
     formData.append('telegramId', telegramUser.id);
     formData.append('packageId', selectedPackage.id);
     formData.append('packageName', selectedPackage.name);
-    formData.append('amount', selectedPackage.price);
     formData.append('userInput', userInput);
     formData.append('screenshot', screenshot);
     
-    const response = await fetch('/api/order', {
+    let endpoint = '/api/order';
+    if (selectedPackage.method === 'stars') {
+      formData.append('starsAmount', selectedPackage.starsPrice);
+      endpoint = '/api/order-stars';
+    } else {
+      formData.append('amount', selectedPackage.price);
+      formData.append('paymentMethod', selectedPackage.method);
+    }
+    
+    const response = await fetch(endpoint, {
       method: 'POST',
       body: formData
     });

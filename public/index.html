@@ -21,6 +21,11 @@
       <div class="header">
         <h1>Star Buy Premium Shop</h1>
         <p>Available Packages</p>
+        <div class="payment-options">
+          <button class="payment-option active" data-payment="balance">💵 Balance</button>
+          <button class="payment-option" data-payment="stars">⭐ Telegram Stars</button>
+          <button class="payment-option" data-payment="premium">👑 Premium</button>
+        </div>
       </div>
       <div id="packages-list" class="packages-container"></div>
     </div>
@@ -186,7 +191,7 @@
     <div id="order-modal" class="modal hidden">
       <div class="modal-content">
         <h3>Order <span id="modal-package-name"></span></h3>
-        <p class="price">Price: $<span id="modal-package-price"></span></p>
+        <p class="price" id="modal-price-display">Price: $<span id="modal-package-price"></span></p>
         <div class="form-group">
           <label id="modal-input-label">Enter required info</label>
           <input type="text" id="order-input" placeholder="Enter here">
@@ -194,6 +199,9 @@
         <div class="form-group">
           <label>Upload Screenshot (Required)</label>
           <input type="file" id="order-screenshot" accept="image/*" required>
+        </div>
+        <div id="premium-notice" class="premium-notice hidden">
+          <p>⚠️ This package requires Telegram Premium</p>
         </div>
         <button class="btn btn-primary" id="confirm-order-btn" onclick="confirmOrder()">Confirm Order</button>
         <button class="btn btn-secondary" onclick="closeOrderModal()">Cancel</button>
