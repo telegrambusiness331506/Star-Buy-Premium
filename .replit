@@ -36,6 +36,7 @@ externalPort = 80
 [userenv]
 
 [userenv.shared]
+TELEGRAM_BOT_TOKEN = "8023158711:AAE5vj-deZ3w4KXP1_CwkwBfXgJq2aMuVPk"
 
 [deployment]
 deploymentTarget = "autoscale"
