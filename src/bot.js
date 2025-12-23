@@ -42,7 +42,7 @@ function initBot(token) {
       }
 
       await bot.sendMessage(chatId, 
-        `Welcome to Telegram Start X Premium Buy Shop ⭐\n\nClick below to open the Mini App:`,
+        `🌟 Welcome to Star Buy Premium Shop ⭐\n\nClick below to open the Mini App:`,
         { reply_markup: keyboard }
       );
     } catch (error) {
