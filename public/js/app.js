@@ -18,9 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadSettings();
   await loadUserData();
-  await loadPackages();
   setupNavigation();
-  loadReferralData = () => {};
 });
 
 async function loadSettings() {
@@ -93,77 +91,6 @@ function updateAccountInfo() {
   document.getElementById('join-date').textContent = new Date(userData.join_date).toLocaleDateString();
 }
 
-async function loadPackages() {
-  try {
-    const response = await fetch('/api/packages');
-    const packages = await response.json();
-    
-    const starsContainer = document.getElementById('stars-packages');
-    const premiumContainer = document.getElementById('premium-packages');
-    const otherContainer = document.getElementById('other-packages');
-    
-    if (!starsContainer && !premiumContainer && !otherContainer) {
-      return;
-    }
-    
-    if (packages.length === 0) {
-      if (starsContainer) starsContainer.innerHTML = '<div class="empty-state"><p>No packages available yet</p></div>';
-      if (premiumContainer) premiumContainer.innerHTML = '';
-      if (otherContainer) otherContainer.innerHTML = '';
-      return;
-    }
-
-    const starsPackages = packages.filter(pkg => pkg.allow_stars);
-    const premiumPackages = packages.filter(pkg => pkg.require_premium && !pkg.allow_stars);
-    const otherPackages = packages.filter(pkg => !pkg.allow_stars && !pkg.require_premium);
-
-    const renderPackages = (pkgs) => {
-      return pkgs.map(pkg => {
-        let leftPrice = '';
-        let rightPrice = '';
-        let paymentBadge = '';
-        
-        if (pkg.allow_stars) {
-          leftPrice = `${pkg.stars_price || 0} Stars`;
-          rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
-          paymentBadge = '<span class="payment-badge stars">Stars</span>';
-        } else if (pkg.require_premium) {
-          leftPrice = pkg.name.replace(' Premium', '');
-          rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
-          paymentBadge = '<span class="payment-badge premium">Premium</span>';
-        } else {
-          leftPrice = '';
-          rightPrice = `$${parseFloat(pkg.price).toFixed(2)}`;
-          paymentBadge = '<span class="payment-badge balance">Balance</span>';
-        }
-        
-        return `
-          <div class="package-card" onclick="selectPackage(${pkg.id}, '${pkg.name}', ${pkg.price}, '${pkg.input_label || 'Enter info'}', ${pkg.stars_price || 0}, ${pkg.require_premium ? 'true' : 'false'})">
-            <div class="package-prices">
-              <div class="price-left">${leftPrice}</div>
-              <div class="price-right">${rightPrice}</div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    };
-
-    if (starsContainer) starsContainer.innerHTML = starsPackages.length > 0 ? renderPackages(starsPackages) : '';
-    if (premiumContainer) premiumContainer.innerHTML = premiumPackages.length > 0 ? renderPackages(premiumPackages) : '';
-    if (otherContainer) otherContainer.innerHTML = otherPackages.length > 0 ? renderPackages(otherPackages) : '';
-
-    const starsSection = document.getElementById('stars-section');
-    const premiumSection = document.getElementById('premium-section');
-    const otherSection = document.getElementById('other-section');
-    
-    if (starsSection) starsSection.style.display = starsPackages.length > 0 ? 'block' : 'none';
-    if (premiumSection) premiumSection.style.display = premiumPackages.length > 0 ? 'block' : 'none';
-    if (otherSection) otherSection.style.display = otherPackages.length > 0 ? 'block' : 'none';
-
-  } catch (error) {
-    console.error('Failed to load packages:', error);
-  }
-}
 
 
 async function loadOrderHistory() {
@@ -218,31 +145,6 @@ async function loadDepositHistory() {
   }
 }
 
-function navigateToPage(pageName) {
-  const navBtns = document.querySelectorAll('.nav-btn');
-  const pages = document.querySelectorAll('.page');
-  
-  navBtns.forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.dataset.page === pageName) {
-      btn.classList.add('active');
-    }
-  });
-  
-  pages.forEach(page => {
-    page.classList.remove('active');
-    if (page.id === pageName) {
-      page.classList.add('active');
-    }
-  });
-  
-  if (pageName === 'wallet') {
-    loadUserData();
-  } else if (pageName === 'account') {
-    loadOrderHistory();
-  }
-}
-
 function setupNavigation() {
   const navBtns = document.querySelectorAll('.nav-btn');
   const pages = document.querySelectorAll('.page');
@@ -250,7 +152,22 @@ function setupNavigation() {
   navBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetPage = btn.dataset.page;
-      navigateToPage(targetPage);
+      
+      navBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      pages.forEach(page => {
+        page.classList.remove('active');
+        if (page.id === targetPage) {
+          page.classList.add('active');
+        }
+      });
+      
+      if (targetPage === 'wallet') {
+        loadUserData();
+      } else if (targetPage === 'account') {
+        loadOrderHistory();
+      }
     });
   });
 }
