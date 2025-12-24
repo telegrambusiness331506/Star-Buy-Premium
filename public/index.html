@@ -12,28 +12,145 @@
   <div id="app">
     <nav class="bottom-nav">
       <button class="nav-btn active" data-page="home"><i class="fas fa-home"></i><span>Home</span></button>
+      <button class="nav-btn" data-page="pricing"><i class="fas fa-tag"></i><span>Pricing</span></button>
       <button class="nav-btn" data-page="wallet"><i class="fas fa-wallet"></i><span>Wallet</span></button>
       <button class="nav-btn" data-page="account"><i class="fas fa-user"></i><span>Account</span></button>
       <button class="nav-btn" data-page="community"><i class="fas fa-bars"></i><span>More</span></button>
     </nav>
 
+    <div id="pricing" class="page">
+      <div class="header">
+        <h1>Pricing</h1>
+      </div>
+
+      <div class="pricing-section">
+        <h2 class="pricing-title">⭐ Stars</h2>
+        <div class="pricing-grid">
+          <div class="pricing-item">
+            <span class="price-name">50 Stars</span>
+            <span class="price-amount">$1</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">75 Stars</span>
+            <span class="price-amount">$1.50</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">100 Stars</span>
+            <span class="price-amount">$2</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">150 Stars</span>
+            <span class="price-amount">$3</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">250 Stars</span>
+            <span class="price-amount">$5</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">350 Stars</span>
+            <span class="price-amount">$7</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">500 Stars</span>
+            <span class="price-amount">$10</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">750 Stars</span>
+            <span class="price-amount">$15</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">1K Stars</span>
+            <span class="price-amount">$20</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">1.5K Stars</span>
+            <span class="price-amount">$30</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">2.5K Stars</span>
+            <span class="price-amount">$50</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">5K Stars</span>
+            <span class="price-amount">$100</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">10K Stars</span>
+            <span class="price-amount">$200</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">25K Stars</span>
+            <span class="price-amount">$500</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">35K Stars</span>
+            <span class="price-amount">$700</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">50K Stars</span>
+            <span class="price-amount">$1,000</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">100K Stars</span>
+            <span class="price-amount">$2,000</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">150K Stars</span>
+            <span class="price-amount">$3,000</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">500K Stars</span>
+            <span class="price-amount">$10,000</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">1M Stars</span>
+            <span class="price-amount">$20,000</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-section">
+        <h2 class="pricing-title">👑 Premium</h2>
+        <div class="pricing-grid">
+          <div class="pricing-item">
+            <span class="price-name">3 Months</span>
+            <span class="price-amount">$15</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">6 Months</span>
+            <span class="price-amount">$30</span>
+          </div>
+          <div class="pricing-item">
+            <span class="price-name">1 Year</span>
+            <span class="price-amount">$60</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="home" class="page active">
       <div class="header">
         <h1>Star Buy Premium Shop</h1>
+        <p>Welcome! Choose what you'd like to do below</p>
       </div>
       
-      <div id="stars-section" class="packages-section">
-        <h2 class="section-title"><i class="fas fa-star"></i> Stars</h2>
-        <div id="stars-packages" class="packages-container"></div>
-      </div>
-
-      <div id="premium-section" class="packages-section">
-        <h2 class="section-title"><i class="fas fa-crown"></i> Premium</h2>
-        <div id="premium-packages" class="packages-container"></div>
-      </div>
-
-      <div id="other-section" class="packages-section">
-        <div id="other-packages" class="packages-container"></div>
+      <div class="home-navigation">
+        <button class="nav-menu-btn" onclick="navigateToPage('pricing')">
+          <i class="fas fa-tag"></i>
+          <span>Pricing</span>
+        </button>
+        <button class="nav-menu-btn" onclick="navigateToPage('wallet')">
+          <i class="fas fa-wallet"></i>
+          <span>Wallet</span>
+        </button>
+        <button class="nav-menu-btn" onclick="navigateToPage('account')">
+          <i class="fas fa-user"></i>
+          <span>Account</span>
+        </button>
+        <button class="nav-menu-btn" onclick="navigateToPage('community')">
+          <i class="fas fa-bars"></i>
+          <span>More</span>
+        </button>
       </div>
     </div>
 

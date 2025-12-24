@@ -98,10 +98,18 @@ async function loadPackages() {
     const response = await fetch('/api/packages');
     const packages = await response.json();
     
+    const starsContainer = document.getElementById('stars-packages');
+    const premiumContainer = document.getElementById('premium-packages');
+    const otherContainer = document.getElementById('other-packages');
+    
+    if (!starsContainer && !premiumContainer && !otherContainer) {
+      return;
+    }
+    
     if (packages.length === 0) {
-      document.getElementById('stars-packages').innerHTML = '<div class="empty-state"><p>No packages available yet</p></div>';
-      document.getElementById('premium-packages').innerHTML = '';
-      document.getElementById('other-packages').innerHTML = '';
+      if (starsContainer) starsContainer.innerHTML = '<div class="empty-state"><p>No packages available yet</p></div>';
+      if (premiumContainer) premiumContainer.innerHTML = '';
+      if (otherContainer) otherContainer.innerHTML = '';
       return;
     }
 
@@ -140,17 +148,17 @@ async function loadPackages() {
       }).join('');
     };
 
-    const starsContainer = document.getElementById('stars-packages');
-    const premiumContainer = document.getElementById('premium-packages');
-    const otherContainer = document.getElementById('other-packages');
+    if (starsContainer) starsContainer.innerHTML = starsPackages.length > 0 ? renderPackages(starsPackages) : '';
+    if (premiumContainer) premiumContainer.innerHTML = premiumPackages.length > 0 ? renderPackages(premiumPackages) : '';
+    if (otherContainer) otherContainer.innerHTML = otherPackages.length > 0 ? renderPackages(otherPackages) : '';
 
-    starsContainer.innerHTML = starsPackages.length > 0 ? renderPackages(starsPackages) : '';
-    premiumContainer.innerHTML = premiumPackages.length > 0 ? renderPackages(premiumPackages) : '';
-    otherContainer.innerHTML = otherPackages.length > 0 ? renderPackages(otherPackages) : '';
-
-    document.getElementById('stars-section').style.display = starsPackages.length > 0 ? 'block' : 'none';
-    document.getElementById('premium-section').style.display = premiumPackages.length > 0 ? 'block' : 'none';
-    document.getElementById('other-section').style.display = otherPackages.length > 0 ? 'block' : 'none';
+    const starsSection = document.getElementById('stars-section');
+    const premiumSection = document.getElementById('premium-section');
+    const otherSection = document.getElementById('other-section');
+    
+    if (starsSection) starsSection.style.display = starsPackages.length > 0 ? 'block' : 'none';
+    if (premiumSection) premiumSection.style.display = premiumPackages.length > 0 ? 'block' : 'none';
+    if (otherSection) otherSection.style.display = otherPackages.length > 0 ? 'block' : 'none';
 
   } catch (error) {
     console.error('Failed to load packages:', error);
@@ -210,6 +218,31 @@ async function loadDepositHistory() {
   }
 }
 
+function navigateToPage(pageName) {
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const pages = document.querySelectorAll('.page');
+  
+  navBtns.forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.page === pageName) {
+      btn.classList.add('active');
+    }
+  });
+  
+  pages.forEach(page => {
+    page.classList.remove('active');
+    if (page.id === pageName) {
+      page.classList.add('active');
+    }
+  });
+  
+  if (pageName === 'wallet') {
+    loadUserData();
+  } else if (pageName === 'account') {
+    loadOrderHistory();
+  }
+}
+
 function setupNavigation() {
   const navBtns = document.querySelectorAll('.nav-btn');
   const pages = document.querySelectorAll('.page');
@@ -217,22 +250,7 @@ function setupNavigation() {
   navBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetPage = btn.dataset.page;
-      
-      navBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      pages.forEach(page => {
-        page.classList.remove('active');
-        if (page.id === targetPage) {
-          page.classList.add('active');
-        }
-      });
-      
-      if (targetPage === 'wallet') {
-        loadUserData();
-      } else if (targetPage === 'account') {
-        loadOrderHistory();
-      }
+      navigateToPage(targetPage);
     });
   });
 }
