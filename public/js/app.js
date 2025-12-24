@@ -72,12 +72,9 @@ function updateBalanceDisplays() {
   
   const mainBalance = parseFloat(userData.main_balance).toFixed(2);
   const holdBalance = parseFloat(userData.hold_balance).toFixed(2);
-  const refBalance = parseFloat(userData.referral_balance).toFixed(2);
-  const starsBalance = userData.telegram_stars_balance || 0;
   
   document.getElementById('main-balance').textContent = `$${mainBalance}`;
   document.getElementById('hold-balance').textContent = `$${holdBalance}`;
-  document.getElementById('referral-balance-wallet').textContent = `$${refBalance}`;
   
   document.getElementById('acc-main-balance').textContent = `$${mainBalance}`;
   document.getElementById('acc-hold-balance').textContent = `$${holdBalance}`;
