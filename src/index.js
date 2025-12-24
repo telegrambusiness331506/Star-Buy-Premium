@@ -2,12 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const { pool, initDatabase } = require('./database');
 const { initBot, sendOrderNotification, sendDepositNotification } = require('./bot');
 
 const app = express();
 const PORT = 5000;
+
+// Load JSON data files
+const packagesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/packages.json'), 'utf8'));
+const settingsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/settings.json'), 'utf8'));
 
 app.use(cors());
 app.use(express.json());
@@ -41,24 +46,19 @@ app.get('/api/user/:telegramId', async (req, res) => {
   }
 });
 
-app.get('/api/packages', async (req, res) => {
+app.get('/api/packages', (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM packages WHERE active = TRUE ORDER BY id');
-    res.json(result.rows);
+    const activePackages = packagesData.filter(pkg => pkg.active === true);
+    res.json(activePackages);
   } catch (error) {
     console.error('Get packages error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-app.get('/api/settings', async (req, res) => {
+app.get('/api/settings', (req, res) => {
   try {
-    const result = await pool.query('SELECT key, value FROM settings');
-    const settings = {};
-    result.rows.forEach(row => {
-      settings[row.key] = row.value;
-    });
-    res.json(settings);
+    res.json(settingsData);
   } catch (error) {
     console.error('Get settings error:', error);
     res.status(500).json({ error: 'Server error' });

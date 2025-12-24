@@ -1,0 +1,17 @@
+{
+  "referral_reward": "0.5",
+  "owner_id": "",
+  "order_admin_id": "",
+  "support_admin_id": "",
+  "official_channel": "",
+  "telegram_channel": "",
+  "telegram_group": "",
+  "youtube_channel": "",
+  "customer_support_link": "",
+  "usdt_address": "",
+  "bnb_address": "",
+  "binance_pay_name": "",
+  "binance_pay_id": "",
+  "allow_stars_payment": "true",
+  "allow_premium_purchase": "true"
+}
