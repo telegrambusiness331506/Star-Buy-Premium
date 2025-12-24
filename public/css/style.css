@@ -607,51 +607,15 @@ body {
   color: var(--text-muted);
 }
 
-/* Home Page Styles */
-.home-navigation {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 40px;
-}
-
-.nav-menu-btn {
-  background: var(--card-bg);
-  border: 1px solid rgba(108, 92, 231, 0.2);
-  border-radius: 12px;
-  padding: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.nav-menu-btn i {
-  font-size: 24px;
-  color: var(--primary);
-}
-
-.nav-menu-btn:hover {
-  background: rgba(108, 92, 231, 0.1);
-  border-color: rgba(108, 92, 231, 0.5);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
-}
-
 /* Pricing Styles */
 .pricing-section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .pricing-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   color: var(--text);
 }
 
@@ -659,6 +623,11 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+}
+
+.pricing-grid.compact {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }
 
 .pricing-item {
@@ -672,10 +641,20 @@ body {
   transition: all 0.3s ease;
 }
 
+.pricing-item.compact {
+  padding: 10px;
+  border-radius: 10px;
+  gap: 6px;
+}
+
 .pricing-item:hover {
   transform: translateY(-4px);
   border-color: rgba(108, 92, 231, 0.5);
   box-shadow: 0 8px 16px rgba(108, 92, 231, 0.15);
+}
+
+.pricing-item.compact:hover {
+  transform: translateY(-2px);
 }
 
 .price-name {
@@ -684,10 +663,18 @@ body {
   font-weight: 500;
 }
 
+.pricing-item.compact .price-name {
+  font-size: 12px;
+}
+
 .price-amount {
   font-size: 20px;
   font-weight: 700;
   color: var(--success);
+}
+
+.pricing-item.compact .price-amount {
+  font-size: 16px;
 }
 
 @media (max-width: 480px) {
