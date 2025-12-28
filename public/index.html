@@ -146,44 +146,108 @@
       
       <div id="deposit-form" class="form-container hidden">
         <h3>Add Money</h3>
-        <div class="form-group">
-          <label>Select Payment Method</label>
-          <select id="deposit-method">
-            <option value="usdt">USDT (BEP20) - Min $10</option>
-            <option value="bnb">BNB (BEP20) - Min $1</option>
-            <option value="binance-pay">Binance Pay - Min $2</option>
-            <option value="bitget-pay">Bitget Pay - Min $2</option>
-            <option value="bybit-pay">Bybit Pay - Min $2</option>
-          </select>
+        
+        <!-- Payment Method Cards -->
+        <div class="crypto-header">
+          <p><i class="fas fa-link"></i> Onchin</p>
+          <p class="network-info">Network: BNB Smart Chain (BEP20)</p>
         </div>
-        <div id="usdt-info" class="crypto-info">
-          <p><strong>USDT Address (Smart Chain BEP20):</strong></p>
-          <p style="word-break: break-all; font-family: monospace; font-size: 0.85em; background: #f0f0f0; padding: 8px; border-radius: 4px;" id="usdt-address">Not configured</p>
-          <img id="usdt-qr" src="/images/usdt-qr.jpg" alt="USDT QR Code" style="width: 200px; height: 200px; margin: 10px 0; border-radius: 8px; display: block;">
-          <button class="btn btn-secondary" onclick="saveQRCode('usdt-qr', 'USDT-Address-QR')"><i class="fas fa-download"></i> Save QR Code</button>
-          <p class="note">Minimum Deposit: $10</p>
+        
+        <div class="payment-methods">
+          <div class="payment-card active" id="usdt-card" onclick="selectPaymentMethod('usdt')">
+            <i class="fas fa-circle" style="color: #26a69a; font-size: 24px;"></i>
+            <span>USDT</span>
+          </div>
+          <div class="payment-card" id="bnb-card" onclick="selectPaymentMethod('bnb')">
+            <i class="fas fa-cube" style="color: #f3ba2f; font-size: 24px;"></i>
+            <span>BNB</span>
+          </div>
+          <div class="payment-card" id="binance-pay-card" onclick="selectPaymentMethod('binance-pay')">
+            <span style="font-size: 20px;">🌐</span>
+            <span>Binance Pay</span>
+          </div>
+          <div class="payment-card" id="bitget-pay-card" onclick="selectPaymentMethod('bitget-pay')">
+            <span style="font-size: 20px;">🔗</span>
+            <span>Bitget Pay</span>
+          </div>
+          <div class="payment-card" id="bybit-pay-card" onclick="selectPaymentMethod('bybit-pay')">
+            <span style="font-size: 20px;">⚡</span>
+            <span>Bybit Pay</span>
+          </div>
         </div>
+        
+        <p class="min-info">Min: $10 USDT / $1 BNB / $2 Other</p>
+        
+        <!-- Crypto Info Sections -->
+        <div id="usdt-info" class="crypto-info active">
+          <div class="send-section">
+            <p class="label">Send to:</p>
+            <div class="address-box">
+              <p id="usdt-address" style="font-family: monospace; font-size: 0.85em; word-break: break-all;">Not configured</p>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('usdt-address').innerText)">Copy</button>
+            </div>
+          </div>
+          
+          <div class="qr-section">
+            <p class="label">Or scan QR code:</p>
+            <img id="usdt-qr" src="/images/usdt-qr.jpg" alt="USDT QR Code" class="qr-image">
+            <button class="btn btn-secondary" onclick="saveQRCode('usdt-qr', 'USDT-Address-QR')"><i class="fas fa-download"></i> Save QR Code</button>
+          </div>
+        </div>
+        
         <div id="bnb-info" class="crypto-info hidden">
-          <p><strong>BNB Address (Smart Chain BEP20):</strong></p>
-          <p style="word-break: break-all; font-family: monospace; font-size: 0.85em; background: #f0f0f0; padding: 8px; border-radius: 4px;" id="bnb-address">Not configured</p>
-          <button class="btn btn-secondary" onclick="saveQRCode('bnb-qr', 'BNB-Address-QR')"><i class="fas fa-download"></i> Save QR Code</button>
-          <p class="note">Minimum Deposit: $1</p>
+          <div class="send-section">
+            <p class="label">Send to:</p>
+            <div class="address-box">
+              <p id="bnb-address" style="font-family: monospace; font-size: 0.85em; word-break: break-all;">Not configured</p>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('bnb-address').innerText)">Copy</button>
+            </div>
+          </div>
+          
+          <div class="qr-section">
+            <p class="label">Or scan QR code:</p>
+            <img id="bnb-qr" src="/images/bnb-qr.jpg" alt="BNB QR Code" class="qr-image">
+            <button class="btn btn-secondary" onclick="saveQRCode('bnb-qr', 'BNB-Address-QR')"><i class="fas fa-download"></i> Save QR Code</button>
+          </div>
         </div>
+        
         <div id="binance-pay-info" class="crypto-info hidden">
-          <p><strong>Binance Pay Name:</strong> <span id="binance-pay-name">Not configured</span></p>
-          <p><strong>Binance Pay ID:</strong> <span id="binance-pay-id">Not configured</span></p>
-          <p class="note">Minimum Deposit: $2</p>
+          <div class="send-section">
+            <p class="label">Binance Pay Name:</p>
+            <div class="address-box">
+              <p id="binance-pay-name" style="font-family: monospace; font-size: 0.85em;">Not configured</p>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('binance-pay-name').innerText)">Copy</button>
+            </div>
+            <p class="label" style="margin-top: 10px;">Binance Pay ID:</p>
+            <div class="address-box">
+              <p id="binance-pay-id" style="font-family: monospace; font-size: 0.85em;">Not configured</p>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('binance-pay-id').innerText)">Copy</button>
+            </div>
+          </div>
         </div>
+        
         <div id="bitget-pay-info" class="crypto-info hidden">
-          <p><strong>Bitget Pay ID:</strong> <span id="bitget-pay-id">Not configured</span></p>
-          <p class="note">Minimum Deposit: $2</p>
+          <div class="send-section">
+            <p class="label">Bitget Pay ID:</p>
+            <div class="address-box">
+              <p id="bitget-pay-id" style="font-family: monospace; font-size: 0.85em;">Not configured</p>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('bitget-pay-id').innerText)">Copy</button>
+            </div>
+          </div>
         </div>
+        
         <div id="bybit-pay-info" class="crypto-info hidden">
-          <p><strong>Bybit Pay ID:</strong> <span id="bybit-pay-id">Not configured</span></p>
-          <p class="note">Minimum Deposit: $2</p>
+          <div class="send-section">
+            <p class="label">Bybit Pay ID:</p>
+            <div class="address-box">
+              <p id="bybit-pay-id" style="font-family: monospace; font-size: 0.85em;">Not configured</p>
+              <button class="copy-btn" onclick="copyToClipboard(document.getElementById('bybit-pay-id').innerText)">Copy</button>
+            </div>
+          </div>
         </div>
+        
         <div class="form-group">
-          <label>Amount (USD)</label>
+          <label>Amount (USD Equivalent)</label>
           <input type="number" id="deposit-amount" min="1" step="0.01" placeholder="Enter amount">
         </div>
         <div class="form-group">

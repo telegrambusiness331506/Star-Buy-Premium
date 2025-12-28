@@ -291,26 +291,152 @@ body {
   display: none !important;
 }
 
-.binance-info, .crypto-info {
-  background: var(--bg);
-  border-radius: 8px;
+.binance-info, .crypto-header {
+  background: linear-gradient(135deg, #1a4d6d 0%, #0f3a52 100%);
+  border-radius: 12px;
   padding: 16px;
   margin-bottom: 16px;
+  border-left: 4px solid #00d4ff;
 }
 
-.binance-info p, .crypto-info p {
-  margin-bottom: 8px;
+.crypto-header p:first-child {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #fff;
 }
 
-.crypto-info img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin: 10px 0;
+.network-info {
+  font-size: 13px;
+  color: #a0d4ff;
+  margin: 0;
+}
+
+.payment-methods {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.payment-card {
+  background: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.payment-card:hover {
+  border-color: var(--primary);
+  background: #f0f8ff;
+}
+
+.payment-card.active {
+  background: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
+}
+
+.min-info {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.crypto-info {
+  background: linear-gradient(135deg, #1a4d6d 0%, #0f3a52 100%);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.crypto-info.active {
+  display: block;
 }
 
 .crypto-info.hidden {
   display: none;
+}
+
+.send-section {
+  margin-bottom: 20px;
+}
+
+.send-section .label {
+  color: #a0d4ff;
+  font-size: 13px;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.address-box {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.address-box p {
+  color: #fff;
+  margin: 0;
+  flex: 1;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.copy-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.copy-btn:hover {
+  opacity: 0.8;
+}
+
+.qr-section {
+  text-align: center;
+}
+
+.qr-section .label {
+  color: #a0d4ff;
+  font-size: 13px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.qr-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  background: #fff;
+  padding: 8px;
+}
+
+.binance-info p, .crypto-info p {
+  margin-bottom: 8px;
 }
 
 .note {

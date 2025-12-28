@@ -286,7 +286,39 @@ async function confirmOrder() {
 
 function showDepositForm() {
   document.getElementById('deposit-form').classList.remove('hidden');
-  document.getElementById('deposit-method').addEventListener('change', updateDepositInfo);
+}
+
+function selectPaymentMethod(method) {
+  // Update card selection
+  document.querySelectorAll('.payment-card').forEach(card => card.classList.remove('active'));
+  document.getElementById(method + '-card').classList.add('active');
+  
+  // Update info sections
+  document.querySelectorAll('.crypto-info').forEach(info => info.classList.remove('active'));
+  document.getElementById(method + '-info').classList.add('active');
+  
+  // Store selected method
+  document.getElementById('deposit-method').value = method;
+  
+  // Update amount input
+  const amountInput = document.getElementById('deposit-amount');
+  let minAmount = 2;
+  if (method === 'usdt') minAmount = 10;
+  else if (method === 'bnb') minAmount = 1;
+  amountInput.min = minAmount;
+  amountInput.value = '';
+}
+
+function copyToClipboard(text) {
+  if (!text || text === 'Not configured') {
+    alert('Address not configured');
+    return;
+  }
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Copied to clipboard!');
+  }).catch(() => {
+    alert('Failed to copy');
+  });
 }
 
 function hideDepositForm() {
@@ -295,46 +327,6 @@ function hideDepositForm() {
   document.getElementById('tx-hash').value = '';
 }
 
-function updateDepositInfo() {
-  const method = document.getElementById('deposit-method').value;
-  const usdtInfo = document.getElementById('usdt-info');
-  const bnbInfo = document.getElementById('bnb-info');
-  const binancePayInfo = document.getElementById('binance-pay-info');
-  const bitgetPayInfo = document.getElementById('bitget-pay-info');
-  const bybitPayInfo = document.getElementById('bybit-pay-info');
-  const amountInput = document.getElementById('deposit-amount');
-  const txHashLabel = document.getElementById('tx-hash-label');
-  
-  // Hide all info sections
-  usdtInfo.classList.add('hidden');
-  bnbInfo.classList.add('hidden');
-  binancePayInfo.classList.add('hidden');
-  bitgetPayInfo.classList.add('hidden');
-  bybitPayInfo.classList.add('hidden');
-  
-  if (method === 'usdt') {
-    usdtInfo.classList.remove('hidden');
-    amountInput.min = '10';
-    txHashLabel.textContent = 'Transaction Hash';
-  } else if (method === 'bnb') {
-    bnbInfo.classList.remove('hidden');
-    amountInput.min = '1';
-    txHashLabel.textContent = 'Transaction Hash';
-  } else if (method === 'binance-pay') {
-    binancePayInfo.classList.remove('hidden');
-    amountInput.min = '2';
-    txHashLabel.textContent = 'Order ID (Numbers Only)';
-  } else if (method === 'bitget-pay') {
-    bitgetPayInfo.classList.remove('hidden');
-    amountInput.min = '2';
-    txHashLabel.textContent = 'Order ID (Numbers Only)';
-  } else if (method === 'bybit-pay') {
-    bybitPayInfo.classList.remove('hidden');
-    amountInput.min = '2';
-    txHashLabel.textContent = 'Order ID (Numbers Only)';
-  }
-  amountInput.value = '';
-}
 
 async function submitDeposit() {
   if (isProcessing) return;
@@ -342,6 +334,14 @@ async function submitDeposit() {
   const method = document.getElementById('deposit-method').value;
   const amount = parseFloat(document.getElementById('deposit-amount').value);
   const txHash = document.getElementById('tx-hash').value.trim();
+  
+  // Update label based on payment method
+  const txHashLabel = document.getElementById('tx-hash-label');
+  if (['binance-pay', 'bitget-pay', 'bybit-pay'].includes(method)) {
+    txHashLabel.textContent = 'Order ID (Numbers Only)';
+  } else {
+    txHashLabel.textContent = 'Transaction Hash';
+  }
   
   let minAmount = 2;
   if (method === 'usdt') minAmount = 10;
