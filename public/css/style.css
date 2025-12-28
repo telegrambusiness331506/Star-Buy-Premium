@@ -302,6 +302,13 @@ body {
   margin-bottom: 8px;
 }
 
+.crypto-info img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
 .crypto-info.hidden {
   display: none;
 }

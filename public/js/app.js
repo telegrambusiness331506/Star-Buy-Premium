@@ -417,4 +417,40 @@ function closeDepositSuccessModal() {
   document.getElementById('deposit-success-modal').classList.add('hidden');
 }
 
+function saveQRCode(elementId, filename) {
+  const qrImage = document.getElementById(elementId);
+  if (!qrImage) {
+    alert('QR Code not found');
+    return;
+  }
+
+  // Create a canvas to handle the download
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  
+  img.onload = function() {
+    canvas.width = img.width;
+    canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    
+    // Convert canvas to blob and download
+    canvas.toBlob(function(blob) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename + '.jpg';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 'image/jpeg', 0.95);
+  };
+  
+  img.onerror = function() {
+    alert('Failed to load QR code image');
+  };
+  
+  img.src = qrImage.src;
+}
 
