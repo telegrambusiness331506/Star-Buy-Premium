@@ -14,6 +14,8 @@
   "bnb_address": "",
   "binance_pay_name": "",
   "binance_pay_id": "",
+  "bitget_pay_id": "",
+  "bybit_pay_id": "",
   "allow_stars_payment": "true",
   "allow_premium_purchase": "true"
 }

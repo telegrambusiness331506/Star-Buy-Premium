@@ -26,10 +26,15 @@ async function loadSettings() {
     const response = await fetch('/api/settings');
     settings = await response.json();
     
+    // Load cryptocurrency addresses
     document.getElementById('usdt-address').textContent = settings.usdt_address || 'Not configured';
     document.getElementById('bnb-address').textContent = settings.bnb_address || 'Not configured';
+    
+    // Load payment service IDs
     document.getElementById('binance-pay-name').textContent = settings.binance_pay_name || 'Not configured';
     document.getElementById('binance-pay-id').textContent = settings.binance_pay_id || 'Not configured';
+    document.getElementById('bitget-pay-id').textContent = settings.bitget_pay_id || 'Not configured';
+    document.getElementById('bybit-pay-id').textContent = settings.bybit_pay_id || 'Not configured';
     
     const customerSupportBtn = document.getElementById('customer-support-btn');
     
@@ -295,12 +300,17 @@ function updateDepositInfo() {
   const usdtInfo = document.getElementById('usdt-info');
   const bnbInfo = document.getElementById('bnb-info');
   const binancePayInfo = document.getElementById('binance-pay-info');
+  const bitgetPayInfo = document.getElementById('bitget-pay-info');
+  const bybitPayInfo = document.getElementById('bybit-pay-info');
   const amountInput = document.getElementById('deposit-amount');
   const txHashLabel = document.getElementById('tx-hash-label');
   
+  // Hide all info sections
   usdtInfo.classList.add('hidden');
   bnbInfo.classList.add('hidden');
   binancePayInfo.classList.add('hidden');
+  bitgetPayInfo.classList.add('hidden');
+  bybitPayInfo.classList.add('hidden');
   
   if (method === 'usdt') {
     usdtInfo.classList.remove('hidden');
@@ -312,6 +322,14 @@ function updateDepositInfo() {
     txHashLabel.textContent = 'Transaction Hash';
   } else if (method === 'binance-pay') {
     binancePayInfo.classList.remove('hidden');
+    amountInput.min = '2';
+    txHashLabel.textContent = 'Order ID (Numbers Only)';
+  } else if (method === 'bitget-pay') {
+    bitgetPayInfo.classList.remove('hidden');
+    amountInput.min = '2';
+    txHashLabel.textContent = 'Order ID (Numbers Only)';
+  } else if (method === 'bybit-pay') {
+    bybitPayInfo.classList.remove('hidden');
     amountInput.min = '2';
     txHashLabel.textContent = 'Order ID (Numbers Only)';
   }
@@ -335,11 +353,13 @@ async function submitDeposit() {
   }
   
   if (!txHash) {
-    alert(`Please enter ${method === 'binance-pay' ? 'Order ID' : 'transaction hash'}`);
+    const inputLabel = ['binance-pay', 'bitget-pay', 'bybit-pay'].includes(method) ? 'Order ID' : 'transaction hash';
+    alert(`Please enter ${inputLabel}`);
     return;
   }
   
-  if (method === 'binance-pay' && !/^\d+$/.test(txHash)) {
+  // Validate order ID format for payment services (numbers only)
+  if (['binance-pay', 'bitget-pay', 'bybit-pay'].includes(method) && !/^\d+$/.test(txHash)) {
     alert('Order ID must contain numbers only');
     return;
   }
@@ -350,13 +370,21 @@ async function submitDeposit() {
   btn.textContent = 'Processing...';
   
   try {
+    // Convert method format for API
+    let apiMethod = method;
+    if (method === 'usdt') apiMethod = 'USDT';
+    else if (method === 'bnb') apiMethod = 'BNB';
+    else if (method === 'binance-pay') apiMethod = 'Binance Pay';
+    else if (method === 'bitget-pay') apiMethod = 'Bitget Pay';
+    else if (method === 'bybit-pay') apiMethod = 'Bybit Pay';
+    
     const response = await fetch('/api/deposit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         telegramId: telegramUser.id,
         amount,
-        method: method === 'binance-pay' ? 'Binance Pay' : method.toUpperCase(),
+        method: apiMethod,
         txHash
       })
     });

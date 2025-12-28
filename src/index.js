@@ -165,7 +165,8 @@ app.post('/api/deposit', async (req, res) => {
       return res.status(400).json({ error: 'Transaction hash or Order ID is required' });
     }
 
-    if (method === 'Binance Pay' && !/^\d+$/.test(txHash)) {
+    // Validate order ID format for payment services (numbers only)
+    if (['Binance Pay', 'Bitget Pay', 'Bybit Pay'].includes(method) && !/^\d+$/.test(txHash)) {
       return res.status(400).json({ error: 'Order ID must contain numbers only' });
     }
 
