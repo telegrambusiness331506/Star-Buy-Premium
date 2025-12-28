@@ -364,7 +364,8 @@ async function submitDeposit() {
     const result = await response.json();
     
     if (result.success) {
-      alert('Deposit submitted successfully! It will be processed shortly.');
+      // Show success modal instead of alert
+      showDepositSuccessModal();
       hideDepositForm();
       await loadUserData();
     } else {
@@ -378,6 +379,14 @@ async function submitDeposit() {
     btn.disabled = false;
     btn.textContent = 'Submit Deposit';
   }
+}
+
+function showDepositSuccessModal() {
+  document.getElementById('deposit-success-modal').classList.remove('hidden');
+}
+
+function closeDepositSuccessModal() {
+  document.getElementById('deposit-success-modal').classList.add('hidden');
 }
 
 
