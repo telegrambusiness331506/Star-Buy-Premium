@@ -182,6 +182,11 @@ function selectPackage(id, name, price, inputLabel, starsPrice, requirePremium) 
   
   const method = currentPaymentMethod;
   
+  if (method === 'balance' && parseFloat(userData.main_balance) < 1) {
+    alert('Insufficient Balance');
+    return;
+  }
+  
   if (method === 'balance' && parseFloat(userData.main_balance) < price) {
     alert('Insufficient balance. Please add money to your wallet first.');
     return;

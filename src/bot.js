@@ -496,6 +496,8 @@ async function sendOrderNotification(order, user) {
       `🆕 New Order!\n\n` +
       `📦 Order #${order.order_id}\n` +
       `User ID: \`${order.user_id}\`\n` +
+      `Username: @${user.username || 'N/A'}\n` +
+      `Transaction ID: \`${order.order_id}\`\n` +
       `Package: ${order.package_name}\n` +
       `Amount: $${parseFloat(order.amount).toFixed(2)}\n` +
       `Input: ${order.user_input || 'N/A'}\n` +
@@ -517,6 +519,7 @@ async function sendDepositNotification(deposit) {
   
   if (!adminId || !bot) return;
 
+  const user = await getUser(deposit.user_id);
   const keyboard = {
     inline_keyboard: [
       [
@@ -532,6 +535,8 @@ async function sendDepositNotification(deposit) {
       `🆕 New Deposit!\n\n` +
       `💰 Deposit #${deposit.deposit_id}\n` +
       `User ID: \`${deposit.user_id}\`\n` +
+      `Username: @${user && user.username ? user.username : 'N/A'}\n` +
+      `Transaction ID: \`${deposit.deposit_id}\`\n` +
       `Amount: $${parseFloat(deposit.amount).toFixed(2)}\n` +
       `Method: ${deposit.method}\n` +
       `Binance Order ID: ${deposit.binance_order_id || 'N/A'}\n` +
