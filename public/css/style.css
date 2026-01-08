@@ -18,6 +18,17 @@
   --card-bg: #16213e;
   --text: #eaeaea;
   --text-muted: #b2bec3;
+  --nav-bg: #16213e;
+  --input-bg: #1a1a2e;
+}
+
+[data-theme="light"] {
+  --bg: #f5f6fa;
+  --card-bg: #ffffff;
+  --text: #2d3436;
+  --text-muted: #636e72;
+  --nav-bg: #ffffff;
+  --input-bg: #f1f2f6;
 }
 
 body {
@@ -26,6 +37,7 @@ body {
   color: var(--text);
   min-height: 100vh;
   padding-bottom: 70px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 #app {
@@ -66,12 +78,13 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--card-bg);
+  background: var(--nav-bg);
   display: flex;
   justify-content: space-around;
   padding: 12px 0;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(0,0,0,0.1);
   z-index: 100;
+  transition: background-color 0.3s;
 }
 
 .nav-btn {
@@ -360,10 +373,11 @@ body {
   width: 100%;
   padding: 14px;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--input-bg);
   color: var(--text);
   font-size: 16px;
+  transition: background-color 0.3s;
 }
 
 .form-group input:focus {
@@ -404,7 +418,7 @@ body {
 }
 
 .payment-card {
-  background: #f8f9fa;
+  background: var(--input-bg);
   border: 2px solid transparent;
   border-radius: 12px;
   padding: 12px;
@@ -417,17 +431,18 @@ body {
   gap: 6px;
   font-size: 12px;
   font-weight: 500;
+  color: var(--text);
 }
 
 .payment-card:hover {
   border-color: var(--primary);
-  background: #f0f8ff;
+  background: rgba(108, 92, 231, 0.05);
 }
 
 .payment-card.active {
-  background: #fff;
+  background: var(--card-bg);
   border-color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.3);
 }
 
 .min-info {
@@ -465,7 +480,7 @@ body {
 }
 
 .address-box {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 12px;
   display: flex;
@@ -475,8 +490,12 @@ body {
   margin-bottom: 12px;
 }
 
+[data-theme="dark"] .address-box {
+  background: rgba(0, 0, 0, 0.3);
+}
+
 .address-box p {
-  color: #fff;
+  color: var(--text);
   margin: 0;
   flex: 1;
   font-size: 12px;
@@ -664,7 +683,8 @@ body {
   gap: 12px;
   text-decoration: none;
   color: var(--text);
-  transition: transform 0.2s;
+  transition: transform 0.2s, background-color 0.3s;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
 .link-card:hover {
@@ -892,6 +912,12 @@ body {
 
 .pricing-item.compact .price-amount {
   font-size: 16px;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px;
 }
 
 @media (max-width: 480px) {
