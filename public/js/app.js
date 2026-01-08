@@ -164,6 +164,11 @@ function setupNavigation() {
           page.classList.add('active');
         }
       });
+
+      // Reset home view when switching away and back
+      if (targetPage === 'home') {
+        hideCategory();
+      }
       
       if (targetPage === 'wallet') {
         loadUserData();
@@ -172,6 +177,18 @@ function setupNavigation() {
       }
     });
   });
+}
+
+function showCategory(categoryId) {
+  document.querySelector('.category-grid').classList.add('hidden');
+  document.querySelector('.header').classList.add('hidden');
+  document.getElementById(categoryId).classList.remove('hidden');
+}
+
+function hideCategory() {
+  document.querySelectorAll('.category-content').forEach(content => content.classList.add('hidden'));
+  document.querySelector('.category-grid').classList.remove('hidden');
+  document.querySelector('.header').classList.remove('hidden');
 }
 
 function selectPackage(id, name, price, inputLabel, starsPrice, requirePremium) {
